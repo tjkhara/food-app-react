@@ -2,7 +2,7 @@ import useInput from '../../hooks/use-input'
 import classes from './BasicForm.module.css'
 import Card from '../UI/Card'
 
-const BasicForm = (props) => {
+const ItemForm = (props) => {
   // name
   const {
     value: enteredName,
@@ -53,6 +53,12 @@ const BasicForm = (props) => {
     resetNameInput()
     resetDescriptionInput()
     resetPriceInput()
+
+    props.onEnterItem({
+      name: enteredName,
+      description: enteredDescription,
+      price: enteredPrice,
+    })
   }
 
   const firstnameInputClasses = nameInputHasError
@@ -68,60 +74,56 @@ const BasicForm = (props) => {
     : `${classes.formControl}`
 
   return (
-    <section className={classes.basicForm}>
-      <Card>
-        <form onSubmit={formSubmissionHandler}>
-          <div className={`${classes.controlGroup} ${firstnameInputClasses}`}>
-            <div className='form-control'>
-              <label htmlFor='name'>Name</label>
-              <input
-                type='text'
-                id='name'
-                onChange={nameChangedHandler}
-                onBlur={nameBlurHandler}
-                value={enteredName}
-              />
-              {nameInputHasError && (
-                <p className={classes.errorText}>Name must not be empty</p>
-              )}
-            </div>
-            <div className={`${classes.controlGroup} ${lastnameInputClasses}`}>
-              <label htmlFor='description'>Description</label>
-              <input
-                type='text'
-                id='description'
-                onChange={descriptionChangedHandler}
-                onBlur={descriptionBlurHandler}
-                value={enteredDescription}
-              />
-              {descriptionInputHasError && (
-                <p className={classes.errorText}>
-                  Description must not be empty
-                </p>
-              )}
-            </div>
-          </div>
-          {/* Price */}
-          <div className={`${classes.controlGroup} ${emailInputClasses}`}>
-            <label htmlFor='price'>Price</label>
+    <Card>
+      <form onSubmit={formSubmissionHandler}>
+        <div className={`${classes.controlGroup} ${firstnameInputClasses}`}>
+          <div className='form-control'>
+            <label htmlFor='name'>Name</label>
             <input
-              type='number'
-              id='price'
-              onChange={priceChangedHandler}
-              onBlur={priceBlurHandler}
-              value={enteredPrice}
+              type='text'
+              id='name'
+              onChange={nameChangedHandler}
+              onBlur={nameBlurHandler}
+              value={enteredName}
             />
-            {priceInputHasError && (
-              <p className='error-text'>Please enter valid price.</p>
+            {nameInputHasError && (
+              <p className={classes.errorText}>Name must not be empty</p>
             )}
           </div>
-          <div className='form-actions'>
-            <button disabled={!formIsValid}>Submit</button>
+          <div className={`${classes.controlGroup} ${lastnameInputClasses}`}>
+            <label htmlFor='description'>Description</label>
+            <input
+              type='text'
+              id='description'
+              onChange={descriptionChangedHandler}
+              onBlur={descriptionBlurHandler}
+              value={enteredDescription}
+            />
+            {descriptionInputHasError && (
+              <p className={classes.errorText}>Description must not be empty</p>
+            )}
           </div>
-        </form>
-      </Card>
-    </section>
+        </div>
+        {/* Price */}
+        <div className={`${classes.controlGroup} ${emailInputClasses}`}>
+          <label htmlFor='price'>Price</label>
+          <input
+            type='number'
+            id='price'
+            onChange={priceChangedHandler}
+            onBlur={priceBlurHandler}
+            value={enteredPrice}
+          />
+          {priceInputHasError && (
+            <p className='error-text'>Please enter valid price.</p>
+          )}
+        </div>
+        <div className='form-actions'>
+          <button disabled={!formIsValid}>Submit</button>
+        </div>
+      </form>
+    </Card>
   )
 }
 
-export default BasicForm
+export default ItemForm
