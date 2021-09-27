@@ -3,55 +3,39 @@ import classes from './BasicForm.module.css'
 import Card from '../UI/Card'
 
 const BasicForm = (props) => {
-  // First name
+  // name
   const {
-    value: enteredFirstName,
-    hasError: firstnameInputHasError,
-    valueChangeHandler: firstnameChangedHandler,
-    inputBlurHandler: firstnameBlurHandler,
-    isValid: enteredFirstNameIsValid,
-    reset: resetFirstNameInput,
+    value: enteredName,
+    hasError: nameInputHasError,
+    valueChangeHandler: nameChangedHandler,
+    inputBlurHandler: nameBlurHandler,
+    isValid: enteredNameIsValid,
+    reset: resetNameInput,
   } = useInput((value) => value.trim() !== '')
 
-  // Last name
+  // description
   const {
-    value: enteredLastName,
-    hasError: lastnameInputHasError,
-    valueChangeHandler: lastnameChangedHandler,
-    inputBlurHandler: lastnameBlurHandler,
-    isValid: enteredLastNameIsValid,
-    reset: resetLastNameInput,
+    value: enteredDescription,
+    hasError: descriptionInputHasError,
+    valueChangeHandler: descriptionChangedHandler,
+    inputBlurHandler: descriptionBlurHandler,
+    isValid: enteredDescriptionIsValid,
+    reset: resetDescriptionInput,
   } = useInput((value) => value.trim() !== '')
 
-  // Email validation
-  function ValidateEmail(inputText) {
-    let isValid = false
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    if (inputText.match(mailformat)) {
-      isValid = true
-    } else {
-      isValid = false
-    }
-    return isValid && inputText.trim() !== ''
-  }
-
-  // For email
+  // For price
   const {
-    value: enteredEmail,
-    hasError: emailInputHasError,
-    valueChangeHandler: emailChangedHandler,
-    inputBlurHandler: emailBlurHandler,
-    isValid: enteredEmailIsValid,
-    reset: resetEmailInput,
-  } = useInput(ValidateEmail)
+    value: enteredPrice,
+    hasError: priceInputHasError,
+    valueChangeHandler: priceChangedHandler,
+    inputBlurHandler: priceBlurHandler,
+    isValid: enteredPriceIsValid,
+    reset: resetPriceInput,
+  } = useInput((value) => value.trim() !== '' && value > 0)
 
   let formIsValid = false
 
-  if (
-    enteredFirstNameIsValid &&
-    enteredLastNameIsValid &&
-    enteredEmailIsValid
-  ) {
+  if (enteredNameIsValid && enteredDescriptionIsValid && enteredPriceIsValid) {
     formIsValid = true
   }
 
@@ -59,27 +43,27 @@ const BasicForm = (props) => {
     e.preventDefault()
 
     if (
-      !enteredFirstNameIsValid ||
-      !enteredLastNameIsValid ||
-      !enteredEmailIsValid
+      !enteredNameIsValid ||
+      !enteredDescriptionIsValid ||
+      !enteredPriceIsValid
     ) {
       return
     }
 
-    resetFirstNameInput()
-    resetLastNameInput()
-    resetEmailInput()
+    resetNameInput()
+    resetDescriptionInput()
+    resetPriceInput()
   }
 
-  const firstnameInputClasses = firstnameInputHasError
+  const firstnameInputClasses = nameInputHasError
     ? `${classes.formControl} ${classes.invalid}`
     : `${classes.formControl}`
 
-  const lastnameInputClasses = firstnameInputHasError
+  const lastnameInputClasses = descriptionInputHasError
     ? `${classes.formControl} ${classes.invalid}`
     : `${classes.formControl}`
 
-  const emailInputClasses = emailInputHasError
+  const emailInputClasses = priceInputHasError
     ? `${classes.formControl} ${classes.invalid}`
     : `${classes.formControl}`
 
@@ -89,43 +73,46 @@ const BasicForm = (props) => {
         <form onSubmit={formSubmissionHandler}>
           <div className={`${classes.controlGroup} ${firstnameInputClasses}`}>
             <div className='form-control'>
-              <label htmlFor='firstName'>First Name</label>
+              <label htmlFor='name'>Name</label>
               <input
                 type='text'
-                id='firstName'
-                onChange={firstnameChangedHandler}
-                onBlur={firstnameBlurHandler}
-                value={enteredFirstName}
+                id='name'
+                onChange={nameChangedHandler}
+                onBlur={nameBlurHandler}
+                value={enteredName}
               />
-              {firstnameInputHasError && (
-                <p className='error-text'>Name must not be empty</p>
+              {nameInputHasError && (
+                <p className={classes.errorText}>Name must not be empty</p>
               )}
             </div>
             <div className={`${classes.controlGroup} ${lastnameInputClasses}`}>
-              <label htmlFor='lastName'>Last Name</label>
+              <label htmlFor='description'>Description</label>
               <input
                 type='text'
-                id='lastName'
-                onChange={lastnameChangedHandler}
-                onBlur={lastnameBlurHandler}
-                value={enteredLastName}
+                id='description'
+                onChange={descriptionChangedHandler}
+                onBlur={descriptionBlurHandler}
+                value={enteredDescription}
               />
-              {lastnameInputHasError && (
-                <p className='error-text'>Name must not be empty</p>
+              {descriptionInputHasError && (
+                <p className={classes.errorText}>
+                  Description must not be empty
+                </p>
               )}
             </div>
           </div>
+          {/* Price */}
           <div className={`${classes.controlGroup} ${emailInputClasses}`}>
-            <label htmlFor='email'>E-Mail Address</label>
+            <label htmlFor='price'>Price</label>
             <input
-              type='email'
-              id='name'
-              onChange={emailChangedHandler}
-              onBlur={emailBlurHandler}
-              value={enteredEmail}
+              type='number'
+              id='price'
+              onChange={priceChangedHandler}
+              onBlur={priceBlurHandler}
+              value={enteredPrice}
             />
-            {emailInputHasError && (
-              <p className='error-text'>Please enter valid email.</p>
+            {priceInputHasError && (
+              <p className='error-text'>Please enter valid price.</p>
             )}
           </div>
           <div className='form-actions'>
